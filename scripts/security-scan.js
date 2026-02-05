@@ -39,6 +39,19 @@ const SECRET_PATTERNS = [
 // Files/directories to skip
 const SKIP_DIRS = ['node_modules', '.next', '.git', 'dist', 'build', '.vercel'];
 const SKIP_FILES = ['package-lock.json', 'yarn.lock', 'pnpm-lock.yaml'];
+const SKIP_EXTENSIONS = ['.md']; // Docs often contain examples
+
+// Strings that indicate placeholder/example values (not real secrets)
+const PLACEHOLDER_PATTERNS = [
+  'user:pass@',
+  'your-api-key',
+  'your_api_key',
+  'xxx',
+  'placeholder',
+  'example',
+  '<your',
+  '[your',
+];
 
 // Files that should NEVER be tracked in git
 const SENSITIVE_FILE_PATTERNS = [
@@ -57,10 +70,17 @@ function log(level, message) {
   console.log(`${level} ${message}`);
 }
 
+function isPlaceholder(line) {
+  const lowerLine = line.toLowerCase();
+  return PLACEHOLDER_PATTERNS.some(p => lowerLine.includes(p));
+}
+
 function scanFile(filePath) {
   const ext = path.extname(filePath);
-  const validExtensions = ['.js', '.jsx', '.ts', '.tsx', '.json', '.md', '.html', '.env'];
+  const validExtensions = ['.js', '.jsx', '.ts', '.tsx', '.json', '.html', '.env'];
   
+  // Skip documentation files (they contain examples by design)
+  if (SKIP_EXTENSIONS.includes(ext)) return;
   if (!validExtensions.includes(ext) && !filePath.includes('.env')) return;
   if (SKIP_FILES.includes(path.basename(filePath))) return;
   
@@ -72,10 +92,16 @@ function scanFile(filePath) {
       // Skip comments
       if (line.trim().startsWith('//') || line.trim().startsWith('#')) return;
       
+      // Skip placeholder/example values
+      if (isPlaceholder(line)) return;
+      
       SECRET_PATTERNS.forEach(({ pattern, name }) => {
         if (pattern.test(line)) {
           // Check if it's actually using env var (false positive)
           if (line.includes('process.env') || line.includes('import.meta.env')) return;
+          
+          // Check if it's in a placeholder attribute
+          if (line.includes('placeholder=') || line.includes('placeholder:')) return;
           
           log(CRITICAL, `${name} found in ${filePath}:${index + 1}`);
           issues.critical++;
