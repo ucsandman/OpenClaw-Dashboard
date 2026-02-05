@@ -365,9 +365,10 @@ CREATE TABLE IF NOT EXISTS calendar_events (
                   <a
                     href="https://vercel.com/new/clone?repository-url=https://github.com/ucsandman/OpenClaw-Dashboard&env=DATABASE_URL&envDescription=Your%20Neon%20PostgreSQL%20connection%20string"
                     target="_blank"
-                    className="inline-block"
+                    className="inline-flex items-center gap-2 bg-black hover:bg-gray-900 text-white px-6 py-3 rounded-lg font-medium border border-gray-700 transition-all"
                   >
-                    <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+                    <svg height="20" viewBox="0 0 76 65" fill="currentColor"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+                    Deploy with Vercel
                   </a>
                 </div>
 
