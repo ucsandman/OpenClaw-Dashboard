@@ -4,6 +4,12 @@ A beautiful, real-time dashboard for monitoring your AI agent's activity. Built 
 
 ![Dashboard Preview](https://img.shields.io/badge/Next.js-15-black) ![Tailwind](https://img.shields.io/badge/Tailwind-CSS-38bdf8) ![Neon](https://img.shields.io/badge/Neon-Postgres-00e599)
 
+## 🚀 One-Click Deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ucsandman/OpenClaw-Dashboard&env=DATABASE_URL&envDescription=Your%20Neon%20PostgreSQL%20connection%20string&envLink=https://console.neon.tech)
+
+**New to this?** Visit `/setup` after deploying for a guided walkthrough!
+
 ## Features
 
 - 🔌 **Integrations Settings** - Configure all your services from the UI
